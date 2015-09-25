@@ -1,5 +1,5 @@
 .city {
-	/*min-width: 25%;*/
+	min-width: 300px;
 
 	&__loading {
 		position: absolute;
@@ -13,8 +13,7 @@
 	}
 
 	&__card {
-		/*width: 100%;*/
+		width: 100%;
 		display: block;
-		/*min-width: 200px;*/
 	}
 }
