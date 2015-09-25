@@ -70,7 +70,7 @@ function bundle() {
 		.pipe(buffer())
 		.pipe($.sourcemaps.init({loadMaps: true}))
 			.pipe($.if(!dev, $.uglify()))
-		.pipe($.sourcemaps.write('./'))
+		.pipe($.if(dev, $.sourcemaps.write('./')))
 		.pipe(gulp.dest('./dist'))
 		.pipe(browserSync.stream({once: true}));
 }
