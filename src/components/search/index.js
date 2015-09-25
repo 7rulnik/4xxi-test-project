@@ -2,6 +2,7 @@ import React, {Component, PropTypes} from 'react';
 import ReactDOM from 'react-dom';
 import classNames from 'classNames';
 import token from '../../token';
+import debounce from 'lodash/function/debounce';
 
 function checkStatus(response) {
 	if (response.status >= 200 && response.status < 300) {
@@ -50,6 +51,7 @@ export default class Search extends Component {
 		this.onBlur = this.onBlur.bind(this);
 		this.onKeyDown = this.onKeyDown.bind(this);
 		this.onItemClick = this.onItemClick.bind(this);
+		this.getList = debounce(this.getList, 300);
 
 		document.body.addEventListener('mousedown', this.onBlur);
 		document.body.addEventListener('keydown', this.onBlur);
