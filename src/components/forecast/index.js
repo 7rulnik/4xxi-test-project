@@ -40,16 +40,16 @@ export default class Forecast extends Component {
 			});
 			return;
 		}
-		const {cityList} = this.state;
-		const indexInList = cityList.indexOf(cityID);
 
+		const {cityList} = this.state;
+		const indexInList = cityList.indexOf(String(cityID));
 		if (indexInList > -1) {
 			alert('This city already added');
 			return;
 		}
 
 		this.setState({
-			cityList: cityList.concat([cityID]).reverse()
+			cityList: cityList.concat([String(cityID)]).reverse()
 		}, this.updateLocalStorage);
 	}
 
@@ -57,7 +57,7 @@ export default class Forecast extends Component {
 		const {cityList} = this.state;
 
 		this.setState({
-			cityList: cityList.filter(item => Number(item) !== Number(cityID))
+			cityList: cityList.filter(item => String(item) !== String(cityID))
 		}, this.updateLocalStorage);
 	}
 
@@ -68,14 +68,15 @@ export default class Forecast extends Component {
 
 	render() {
 		const {cityList, currentLocation} = this.state;
-		const cardClass = cityList.length + 1 > 2 ? 'mdl-cell--4-col' : 'mdl-cell--6-col';
+		const currentLocationExist = currentLocation ? 1 : 0;
+		const cardClass = cityList.length + currentLocationExist > 2 ? 'mdl-cell--4-col' : 'mdl-cell--6-col';
 		return (
 			<section className="forecast mdl-card mdl-shadow--4dp">
 				<h1 className="mdl-typography--display-3 mdl-typography--text-center mdl-typography--text-uppercase forecast__title">Forecast App</h1>
 				<Search addCity={this.addCity}/>
 				<section className="mdl-grid">
 					{cityList.length > 0 && cityList.map(item => {
-						return <City key={item} cardClass={cardClass} id={Number(item)} removeCity={this.removeCity}/>;
+						return <City key={item} cardClass={cardClass} id={String(item)} removeCity={this.removeCity}/>;
 					})}
 					{currentLocation && <City geo cardClass={cardClass} id={Number(currentLocation)} removeCity={this.removeCity}/>}
 				</section>
