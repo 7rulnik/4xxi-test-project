@@ -2,6 +2,8 @@
 
 Forecast app built on React
 
+[Demo](http://7rulnik.github.io/4xxi-test-project/)
+
 ## Used tools and technologies
 
 * React
