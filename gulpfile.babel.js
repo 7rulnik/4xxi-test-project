@@ -46,7 +46,9 @@ gulp.task('css', () => {
 	]))
 	.pipe($.if(dev, $.sourcemaps.write('./')))
 	.pipe($.if(!dev, $.postcss([
-		require('cssnano')
+		require('cssnano')({
+			zindex: false
+		})
 	])))
 	.pipe(gulp.dest('dist/'))
 	.pipe(browserSync.reload({stream: true}));
