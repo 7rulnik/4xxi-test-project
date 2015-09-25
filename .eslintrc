@@ -1,0 +1,7 @@
+{
+  "extends": ["xo/browser", "xo/esnext",  "xo-react"],
+  "rules": {
+    "no-alert": 0,
+    "prefer-reflect": [2, { "exceptions": ["call"] }]
+  }
+}
