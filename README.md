@@ -14,6 +14,8 @@ Forecast app built on React
 * Jade
 * ESLint
 * Material Design Lite
+* LocalStorage
+* HTML5 Geolocation
 * OpenWeatherMap API
 
 ## Bulding
