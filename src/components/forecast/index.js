@@ -78,7 +78,7 @@ export default class Forecast extends Component {
 					{cityList.length > 0 && cityList.map(item => {
 						return <City key={item} cardClass={cardClass} id={String(item)} removeCity={this.removeCity}/>;
 					})}
-					{currentLocation && <City geo cardClass={cardClass} id={Number(currentLocation)} removeCity={this.removeCity}/>}
+					{currentLocation && <City geo cardClass={cardClass} id={String(currentLocation)} removeCity={this.removeCity}/>}
 				</section>
 			</section>
 		);

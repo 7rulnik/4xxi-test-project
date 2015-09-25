@@ -1,4 +1,5 @@
 import React, {Component, PropTypes} from 'react';
+import ReactDOM from 'react-dom';
 import classNames from 'classNames';
 import token from '../../token';
 
@@ -39,19 +40,43 @@ export default class Search extends Component {
 		this.state = {
 			value: '',
 			cityList: [],
-			currentItem: -1
+			currentItem: -1,
+			focus: false
 		};
+
 		this.onChange = this.onChange.bind(this);
 		this.getList = this.getList.bind(this);
+		this.onFocus = this.onFocus.bind(this);
 		this.onBlur = this.onBlur.bind(this);
 		this.onKeyDown = this.onKeyDown.bind(this);
 		this.onItemClick = this.onItemClick.bind(this);
+
+		document.body.addEventListener('mousedown', this.onBlur);
+		document.body.addEventListener('keydown', this.onBlur);
 	}
 
-	onBlur() {
+	componentWillUnmount() {
+		document.body.removeEventListener('mousedown', this.onBlur);
+		document.body.removeEventListener('keydown', this.onBlur);
+	}
+
+	onFocus() {
 		this.setState({
-			currentItem: -1
+			focus: true
 		});
+	}
+
+	onBlur(event) {
+		const {target, keyCode} = event;
+		const focus = this.state;
+
+		if (focus && !ReactDOM.findDOMNode(this).contains(target) || keyCode === 27) {
+			this.refs.input.blur();
+			this.setState({
+				focus: false,
+				currentItem: -1
+			});
+		}
 	}
 
 	onKeyDown(event) {
@@ -89,9 +114,9 @@ export default class Search extends Component {
 			if (isExist) {
 				this.props.addCity(valueToCheck);
 				this.setState({
-					// value: cityList[currentItem]
 					value: '',
-					cityList: []
+					cityList: [],
+					focus: false
 				});
 			} else {
 				alert('This city does not exist');
@@ -103,7 +128,8 @@ export default class Search extends Component {
 		const {value} = event.target;
 		this.setState({
 			value,
-			currentItem: -1
+			currentItem: -1,
+			focus: true
 		}, this.getList);
 	}
 
@@ -118,7 +144,7 @@ export default class Search extends Component {
 	}
 
 	render() {
-		const {value, cityList, currentItem} = this.state;
+		const {value, cityList, currentItem, focus} = this.state;
 		return (
 				<div className="mdl-textfield mdl-js-textfield mdl-textfield--floating-label search">
 					<input
@@ -136,7 +162,7 @@ export default class Search extends Component {
 						className="mdl-textfield__label search__label"
 						htmlFor="input"
 						>Choose city from list or enter ID</label>
-					{cityList.length > 0 && <ul className="mdl-card mdl-shadow--6dp search__suggest">
+					{focus && cityList.length > 0 && <ul className="mdl-card mdl-shadow--6dp search__suggest">
 						{cityList.map((item, index) => {
 							const itemClass = classNames(
 								'search__suggest-item',
