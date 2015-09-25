@@ -6,7 +6,17 @@ export default class City extends Component {
 		super(props);
 		this.state = {
 			data: {
-				sys: {}
+				sys: {
+					country: ''
+				},
+				main: {
+					temp: ''
+				},
+				weather: [
+					{
+						descriptions: ''
+					}
+				]
 			},
 			loading: true
 		};
@@ -16,7 +26,7 @@ export default class City extends Component {
 	}
 
 	loadData(id) {
-		fetch(`http://api.openweathermap.org/data/2.5/weather?id=${id}&APPID=${token}`)
+		fetch(`http://api.openweathermap.org/data/2.5/weather?id=${id}&units=metric&APPID=${token}`)
 			.then(response => {
 				return response.json();
 			}).then(data => {
@@ -36,14 +46,20 @@ export default class City extends Component {
 					{loading && <div className="mdl-spinner mdl-spinner--single-color mdl-js-spinner is-active city__loading"></div>}
 
 					{!loading && <div className="mdl-card__title">
-						<h2 className="mdl-card__title-text">{data.name}</h2>
+						<h2 className="mdl-card__title-text">{data.name},&nbsp;{data.sys.country}</h2>
 					</div>}
 
+					<div className="mdl-card__supporting-text">
+						Weather: {data.weather[0].description}<br/>
+						Temp: {Math.floor(data.main.temp)}°C<br/>
+						Humidity: {Math.floor(data.main.humidity)}%<br/>
+						Pressure: {Math.floor(data.main.pressure)} hpa
+					</div>
+
 					<div className="mdl-card__menu">
-						{geo && <button className="mdl-button mdl-button--icon mdl-js-button" id="gps">
-							<i className="material-icons">gps_fixed</i>
-						</button>}
-						{geo && <div className="mdl-tooltip" htmlFor="gps">Ваше местоположение</div>}
+						{geo && <div className="mdl-button mdl-button--icon">
+							<i className="icon material-icons">gps_fixed</i>
+						</div>}
 
 						{!geo && <button
 							onClick={this.props.removeCity.bind(this, id)}
@@ -61,7 +77,7 @@ export default class City extends Component {
 
 City.propTypes = {
 	removeCity: PropTypes.func.isRequired,
-	id: PropTypes.number.isRequired,
+	id: PropTypes.string.isRequired,
 	geo: PropTypes.bool,
 	cardClass: PropTypes.string.isRequired
 };
